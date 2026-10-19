@@ -1,0 +1,3 @@
+<Window xmlns="http://schemas.keshos.dev/keshui/2026" xmlns:x="http://schemas.keshos.dev/xaml/2026">
+  <TextBlock Text="{MagicExtension Foo}" />
+</Window>
