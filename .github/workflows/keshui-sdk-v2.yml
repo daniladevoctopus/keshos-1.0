@@ -21,7 +21,7 @@ jobs:
       - name: Install native UI dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build pkg-config libx11-dev libcairo2-dev libpango1.0-dev xvfb
+          sudo apt-get install -y cmake ninja-build pkg-config libx11-dev libcairo2-dev libpango1.0-dev xvfb imagemagick
       - name: Configure
         run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
       - name: Build
@@ -32,6 +32,18 @@ jobs:
         run: ./build/kxc --dump-ir demo/MainWindow.xaml
       - name: Run CTest
         run: ctest --test-dir build --output-on-failure
+      - name: Capture real gallery screenshot under Xvfb
+        shell: bash
+        run: |
+          xvfb-run -a -s "-screen 0 1600x1000x24" bash -c '
+            set -e
+            ./build/keshui_gallery > build/gallery.log 2>&1 &
+            pid=$!
+            trap "kill $pid 2>/dev/null || true" EXIT
+            sleep 2
+            import -display "$DISPLAY" -window root build/keshui-gallery-root.png
+            convert build/keshui-gallery-root.png -crop 1440x900+120+80 +repage build/keshui-gallery.png
+          '
       - name: Smoke-start gallery under Xvfb
         shell: bash
         run: |
@@ -39,3 +51,9 @@ jobs:
           timeout 3s xvfb-run -a ./build/keshui_gallery
           code=$?
           if [ "$code" -ne 0 ] && [ "$code" -ne 124 ]; then exit "$code"; fi
+      - name: Upload real gallery screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: keshui-gallery-screenshot
+          path: experiments/KeshUI-SDK-v2/build/keshui-gallery.png
+          if-no-files-found: error
