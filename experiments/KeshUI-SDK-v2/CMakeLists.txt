@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(KeshUI_SDK_V2 VERSION 0.2.0 LANGUAGES CXX)
+project(KeshUI_SDK_V2 VERSION 0.3.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -15,6 +15,7 @@ pkg_check_modules(PANGO REQUIRED pangocairo)
 
 add_library(keshui STATIC
     src/keshui.cpp
+    src/xaml_runtime.cpp
     src/backend_x11.cpp
 )
 
@@ -62,6 +63,7 @@ endif()
 if(KESHUI_BUILD_TESTS)
     enable_testing()
     add_test(NAME kxc_check COMMAND kxc --check ${CMAKE_CURRENT_SOURCE_DIR}/demo/MainWindow.xaml)
+    add_test(NAME kxc_ir COMMAND kxc --dump-ir ${CMAKE_CURRENT_SOURCE_DIR}/demo/MainWindow.xaml)
 endif()
 
 install(TARGETS keshui kxc
