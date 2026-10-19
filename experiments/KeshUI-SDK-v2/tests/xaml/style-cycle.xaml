@@ -1,0 +1,13 @@
+<Window xmlns="http://schemas.keshos.dev/keshui/2026" xmlns:x="http://schemas.keshos.dev/xaml/2026">
+  <Window.Resources>
+    <ResourceDictionary>
+      <Style x:Key="A" TargetType="Button" BasedOn="{StaticResource B}">
+        <Setter Property="CornerRadius" Value="4" />
+      </Style>
+      <Style x:Key="B" TargetType="Button" BasedOn="{StaticResource A}">
+        <Setter Property="MinWidth" Value="100" />
+      </Style>
+    </ResourceDictionary>
+  </Window.Resources>
+  <Button Style="{StaticResource A}" Content="Cycle" />
+</Window>
