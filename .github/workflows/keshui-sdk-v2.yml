@@ -1,8 +1,8 @@
-name: KeshUI SDK v2
+name: KeshUI SDK
 
 on:
   push:
-    branches: [ keshui-sdk-v2 ]
+    branches: [ keshui-sdk-v2, keshui-sdk-v3 ]
     paths:
       - 'experiments/KeshUI-SDK-v2/**'
       - '.github/workflows/keshui-sdk-v2.yml'
@@ -28,6 +28,8 @@ jobs:
         run: cmake --build build --verbose
       - name: Validate XAML
         run: ./build/kxc --check demo/MainWindow.xaml
+      - name: Dump compiled XAML IR
+        run: ./build/kxc --dump-ir demo/MainWindow.xaml
       - name: Run CTest
         run: ctest --test-dir build --output-on-failure
       - name: Smoke-start gallery under Xvfb
