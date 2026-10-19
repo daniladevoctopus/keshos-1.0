@@ -1,0 +1,6 @@
+<Window xmlns="http://schemas.keshos.dev/keshui/2026" xmlns:x="http://schemas.keshos.dev/xaml/2026">
+  <StackPanel>
+    <TextBlock x:Name="Duplicate" Text="One" />
+    <TextBlock x:Name="Duplicate" Text="Two" />
+  </StackPanel>
+</Window>
