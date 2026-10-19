@@ -90,6 +90,7 @@ public:
 
 private:
     std::string ResolveStaticValue(std::string_view value, int depth = 0) const;
+    std::string ResolveThemeValue(std::string_view key, int depth = 0) const;
     void ApplyStyle(const std::shared_ptr<UIElement>& element,
                     std::string_view key,
                     int depth = 0);
@@ -107,7 +108,7 @@ private:
     };
 
     XamlEventBinder* binder_{};
-    std::unordered_map<std::string, ResourceSpec> resources_;
+    std::unordered_map<std::string, std::vector<ResourceSpec>> resources_;
     std::unordered_map<std::string, StyleSpec> styles_;
     std::unordered_map<std::string, std::weak_ptr<UIElement>> names_;
     std::vector<PendingBinding> bindings_;
