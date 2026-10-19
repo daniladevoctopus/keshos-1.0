@@ -107,7 +107,7 @@ private:
     };
 
     XamlEventBinder* binder_{};
-    std::unordered_map<std::string, std::vector<ResourceSpec>> resources_;
+    std::unordered_map<std::string, ResourceSpec> resources_;
     std::unordered_map<std::string, StyleSpec> styles_;
     std::unordered_map<std::string, std::weak_ptr<UIElement>> names_;
     std::vector<PendingBinding> bindings_;
