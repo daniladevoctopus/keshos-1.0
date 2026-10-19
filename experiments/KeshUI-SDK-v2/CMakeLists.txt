@@ -63,6 +63,11 @@ endif()
 if(KESHUI_BUILD_TESTS)
     enable_testing()
 
+    add_executable(keshui_xaml_runtime_tests tests/xaml_runtime_tests.cpp)
+    target_link_libraries(keshui_xaml_runtime_tests PRIVATE keshui)
+    target_compile_options(keshui_xaml_runtime_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME xaml_runtime COMMAND keshui_xaml_runtime_tests)
+
     add_test(NAME kxc_check COMMAND kxc --check ${CMAKE_CURRENT_SOURCE_DIR}/demo/MainWindow.xaml)
     add_test(NAME kxc_ir COMMAND kxc --dump-ir ${CMAKE_CURRENT_SOURCE_DIR}/demo/MainWindow.xaml)
 
