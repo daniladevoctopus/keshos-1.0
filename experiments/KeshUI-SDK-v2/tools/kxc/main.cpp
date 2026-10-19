@@ -393,7 +393,6 @@ void CollectResources(const Node& node,
         if (resource.key.empty()) Fail(node.line, "KX2001", local + " resource requires x:Key");
         if (resource.value.empty()) Fail(node.line, "KX2002", "resource '" + resource.key + "' has no value");
 
-        // Theme variants intentionally share their logical key. Non-themed duplicates do not.
         const std::string uniquenessKey = resource.theme ? resource.key + "@" + *resource.theme : resource.key;
         if (!model.resourceKeys.insert(uniquenessKey).second) {
             Fail(node.line, "KX2003", "duplicate resource key '" + uniquenessKey + "'");
@@ -440,9 +439,7 @@ void ValidateVisualTree(const Node& node, CompileModel& model, bool inResources 
         ValidateMarkupExtension(node.line, attribute.value);
     }
 
-    for (const auto& child : node.children) {
-        ValidateVisualTree(*child, model, inResources);
-    }
+    for (const auto& child : node.children) ValidateVisualTree(*child, model, inResources);
 }
 
 void ValidateStyleGraph(const CompileModel& model) {
@@ -458,7 +455,7 @@ void ValidateStyleGraph(const CompileModel& model) {
                 Fail(style.line, "KX2110", "Style BasedOn cycle involving '" + current->key + "'");
             }
             const auto it = styles.find(current->basedOn);
-            if (it == styles.end()) break; // Framework resource may be external.
+            if (it == styles.end()) break;
             current = it->second;
         }
     }
@@ -513,9 +510,7 @@ std::string EmitVisualNode(Generator& generator,
                            const Node& node,
                            const std::string& parent,
                            bool inResources = false) {
-    if (IsResourcesProperty(node)) return {};
-    if (inResources) return {};
-    if (!IsVisualNode(node, false)) return {};
+    if (IsResourcesProperty(node) || inResources || !IsVisualNode(node, false)) return {};
 
     const std::string id = "n" + std::to_string(generator.next++);
     generator.out << "    auto " << id << " = keshui::CreateXamlElement(\""
@@ -537,12 +532,8 @@ std::string EmitVisualNode(Generator& generator,
     if (!parent.empty()) generator.out << "    ctx.AddChild(" << parent << ", " << id << ");\n";
 
     for (const auto& child : node.children) {
-        if (IsResourcesProperty(*child)) continue;
-        if (IsPropertyElement(*child)) {
-            // Non-resource property elements are validated and kept in IR, but not materialized yet.
-            continue;
-        }
-        if (KnownMetadataTypes().contains(LocalName(child->name))) continue;
+        if (IsResourcesProperty(*child) || IsPropertyElement(*child) ||
+            KnownMetadataTypes().contains(LocalName(child->name))) continue;
         EmitVisualNode(generator, *child, id, false);
     }
     return id;
@@ -582,7 +573,7 @@ std::string Generate(const Node& root, const CompileModel& model, const std::str
     generator.out << "    if (!window) throw std::runtime_error(\"Root element must be Window\");\n";
     generator.out << "    ctx.Finalize(window);\n";
     generator.out << "    if (ctx.HasErrors()) {\n";
-    generator.out << "        for (const auto& d : ctx.Diagnostics()) if (d.severity == keshui::xaml::Diagnostic::Severity::Error) throw std::runtime_error(d.code + \": \\" + d.message);\n";
+    generator.out << "        for (const auto& d : ctx.Diagnostics()) if (d.severity == keshui::xaml::Diagnostic::Severity::Error) throw std::runtime_error(d.code + \": \" + d.message);\n";
     generator.out << "    }\n";
     generator.out << "    return window;\n";
     generator.out << "}\n}\n";
