@@ -62,8 +62,21 @@ endif()
 
 if(KESHUI_BUILD_TESTS)
     enable_testing()
+
     add_test(NAME kxc_check COMMAND kxc --check ${CMAKE_CURRENT_SOURCE_DIR}/demo/MainWindow.xaml)
     add_test(NAME kxc_ir COMMAND kxc --dump-ir ${CMAKE_CURRENT_SOURCE_DIR}/demo/MainWindow.xaml)
+
+    add_test(NAME kxc_reject_duplicate_name
+             COMMAND kxc --check ${CMAKE_CURRENT_SOURCE_DIR}/tests/xaml/duplicate-name.xaml)
+    set_tests_properties(kxc_reject_duplicate_name PROPERTIES WILL_FAIL TRUE)
+
+    add_test(NAME kxc_reject_style_cycle
+             COMMAND kxc --check ${CMAKE_CURRENT_SOURCE_DIR}/tests/xaml/style-cycle.xaml)
+    set_tests_properties(kxc_reject_style_cycle PROPERTIES WILL_FAIL TRUE)
+
+    add_test(NAME kxc_reject_invalid_markup
+             COMMAND kxc --check ${CMAKE_CURRENT_SOURCE_DIR}/tests/xaml/invalid-markup.xaml)
+    set_tests_properties(kxc_reject_invalid_markup PROPERTIES WILL_FAIL TRUE)
 endif()
 
 install(TARGETS keshui kxc
