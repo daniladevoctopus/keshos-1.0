@@ -1,5 +1,8 @@
 name: KeshUI SDK
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [ keshui-sdk-v2, keshui-sdk-v3 ]
@@ -57,3 +60,19 @@ jobs:
           name: keshui-gallery-screenshot
           path: experiments/KeshUI-SDK-v2/build/keshui-gallery.png
           if-no-files-found: error
+      - name: Publish latest real gallery screenshot to branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/keshui-sdk-v3'
+        shell: bash
+        run: |
+          mkdir -p ../../artifacts
+          cp build/keshui-gallery.png ../../artifacts/keshui-gallery.png
+          cd ../..
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts/keshui-gallery.png
+          if git diff --cached --quiet; then
+            echo "Screenshot unchanged"
+          else
+            git commit -m "Artifacts: update real KeshUI gallery screenshot"
+            git push origin HEAD:keshui-sdk-v3
+          fi
