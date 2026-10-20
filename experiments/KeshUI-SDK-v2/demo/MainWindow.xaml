@@ -17,7 +17,6 @@
   </Window.Resources>
 
   <Grid Columns="224,*">
-    <!-- Fluent 2 navigation rail: neutral surface, compact spacing, subtle selection. -->
     <Border Grid.Column="0"
             Background="{ThemeResource LayerFillColorAltBrush}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -56,7 +55,6 @@
       </StackPanel>
     </Border>
 
-    <!-- Page background follows Fluent 2 neutral-background hierarchy. -->
     <Border Grid.Column="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
       <ScrollViewer>
         <StackPanel Padding="32,26,40,44" Spacing="22">
@@ -67,19 +65,29 @@
               <TextBlock Text="Fluent 2 controls for KeshUI" FontSize="32" FontWeight="SemiBold" />
               <TextBlock Text="Neutral surfaces, semantic tokens, compact spacing and one clear Kesh brand accent." FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
             </StackPanel>
-            <Badge Grid.Column="1" Content="PREVIEW" Margin="16,8,0,0" />
+            <SearchBox Grid.Column="1" Width="250" PlaceholderText="Search controls" Margin="20,4,0,0" />
           </Grid>
 
-          <InfoBar Title="Fluent 2 visual reference is active"
-                   Severity="Informational"
-                   Content="The gallery now follows Microsoft's public Fluent 2 token hierarchy instead of a custom blue-black dashboard theme." />
+          <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                  BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                  BorderThickness="1"
+                  CornerRadius="8"
+                  Padding="0">
+            <Grid Columns="4,*">
+              <Border Grid.Column="0" Background="{ThemeResource AccentFillColorDefaultBrush}" CornerRadius="2" />
+              <StackPanel Grid.Column="1" Padding="14,10,14,10" Spacing="2">
+                <TextBlock Text="Fluent 2 visual reference is active" FontSize="14" FontWeight="SemiBold" />
+                <TextBlock Text="Public Fluent tokens now drive the gallery's neutral surfaces, spacing, shape and hierarchy." FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+              </StackPanel>
+            </Grid>
+          </Border>
 
           <StackPanel Spacing="12">
             <TextBlock Text="Foundations" FontSize="20" FontWeight="SemiBold" />
             <TextBlock Text="Fluent 2 relies on semantic tokens instead of painting every component independently." FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
             <StackPanel Orientation="Horizontal" Spacing="12">
               <Card Width="252" Title="Color" Subtitle="Neutral + brand" Content="Background · foreground · stroke" />
-              <Card Width="252" Title="Typography" Subtitle="Segoe-style hierarchy" Content="12 · 14 · 20 · 28 · 32" />
+              <Card Width="252" Title="Typography" Subtitle="Windows hierarchy" Content="12 · 14 · 20 · 28 · 32" />
               <Card Width="252" Title="Spacing" Subtitle="4 px rhythm" Content="8 · 12 · 16 · 24 · 32" />
               <Card Width="252" Title="Shape" Subtitle="Small radii" Content="4 px controls · 8 px cards" />
             </StackPanel>
@@ -116,14 +124,17 @@
                     Padding="16">
               <StackPanel Spacing="16">
                 <StackPanel Orientation="Horizontal" Spacing="24">
-                  <ToggleSwitch Header="Motion" IsOn="True" />
-                  <CheckBox Content="Telemetry" IsChecked="True" />
-                  <RadioButton Content="Stable channel" IsChecked="True" />
+                  <ToggleSwitch Width="160" Header="Motion" IsOn="True" VerticalAlignment="Center" />
+                  <CheckBox Content="Telemetry" IsChecked="True" VerticalAlignment="Center" />
+                  <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <RadioButton Width="22" IsChecked="True" VerticalAlignment="Center" />
+                    <TextBlock Text="Stable channel" FontSize="14" VerticalAlignment="Center" />
+                  </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="18">
-                  <Slider Width="320" Minimum="0" Maximum="100" Value="68" />
-                  <ProgressBar Width="260" Value="68" />
-                  <ProgressRing Value="68" />
+                  <Slider Width="320" Minimum="0" Maximum="100" Value="68" VerticalAlignment="Center" />
+                  <ProgressBar Width="260" Value="68" VerticalAlignment="Center" />
+                  <ProgressRing Value="68" VerticalAlignment="Center" />
                 </StackPanel>
               </StackPanel>
             </Border>
