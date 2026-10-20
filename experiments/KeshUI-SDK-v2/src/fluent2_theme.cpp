@@ -95,17 +95,54 @@ void ApplyHighContrast(ThemePalette& p) {
     p.focus = Color::FromHex("#FFFFFF");
 }
 
+void ApplyTokens(DesignTokens& t) {
+    // Public Fluent 2 token rhythm. KeshUI keeps its compact 20-token model,
+    // but the numeric values now line up with Fluent 2's common web/desktop
+    // scale rather than the earlier ad-hoc preview values.
+    t.controlCornerRadius = 4;
+    t.overlayCornerRadius = 8;
+    t.controlHeight = 32;
+    t.compactControlHeight = 28;
+    t.touchControlHeight = 40;
+
+    t.space2 = 2;
+    t.space4 = 4;
+    t.space8 = 8;
+    t.space12 = 12;
+    t.space16 = 16;
+    t.space24 = 24;
+    t.space32 = 32;
+
+    t.textCaption = 12;
+    t.textBody = 14;
+    t.textSubtitle = 16;
+    t.textTitle = 20;
+    t.textDisplay = 28;
+
+    t.focusStroke = 2;
+    t.elevationLow = 2;
+    t.elevationMedium = 8;
+    t.elevationHigh = 16;
+
+    t.motionFastMs = 150;
+    t.motionNormalMs = 200;
+    t.motionSlowMs = 300;
+}
+
 } // namespace
 
 void ApplyReferenceTheme(ThemeKind theme) {
     auto& manager = ThemeManager::Current();
     manager.SetTheme(theme);
 
-    // ThemeManager intentionally exposes a read-only palette to ordinary UI
+    // ThemeManager intentionally exposes read-only theme state to ordinary UI
     // code. This compact visual-reference adapter lives inside the SDK and
-    // patches the palette after the base theme is rebuilt. A later theme API
-    // can make custom theme objects first-class without changing callers.
+    // patches the palette/tokens after the base theme is rebuilt. A later
+    // first-class custom-theme object can replace this adapter without changing
+    // callers.
     auto& palette = const_cast<ThemePalette&>(manager.Palette());
+    auto& tokens = const_cast<DesignTokens&>(manager.Tokens());
+    ApplyTokens(tokens);
 
     switch (theme) {
         case ThemeKind::Light:
