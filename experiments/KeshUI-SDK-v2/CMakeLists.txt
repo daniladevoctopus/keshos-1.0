@@ -16,6 +16,7 @@ pkg_check_modules(PANGO REQUIRED pangocairo)
 add_library(keshui STATIC
     src/keshui.cpp
     src/xaml_runtime.cpp
+    src/fluent2_theme.cpp
     src/backend_x11.cpp
 )
 
