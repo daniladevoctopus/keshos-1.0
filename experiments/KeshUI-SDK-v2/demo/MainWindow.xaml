@@ -1,137 +1,182 @@
 <Window xmlns="http://schemas.keshos.dev/keshui/2026"
         xmlns:x="http://schemas.keshos.dev/xaml/2026"
         x:Class="KeshUI.Gallery.MainWindow"
-        Title="KeshUI SDK Gallery" Width="1440" Height="900">
+        Title="KeshUI Gallery · Fluent 2 visual pass" Width="1440" Height="900">
   <Window.Resources>
     <ResourceDictionary>
-      <SolidColorBrush x:Key="GalleryHeroBrush" Color="#1C222A" />
-      <SolidColorBrush x:Key="GalleryInsetBrush" Color="#171B21" />
-      <Thickness x:Key="GalleryCardPadding">18</Thickness>
-      <Style x:Key="GalleryCommandButtonStyle" TargetType="Button">
-        <Setter Property="MinWidth" Value="128" />
-        <Setter Property="CornerRadius" Value="6" />
+      <Style x:Key="CommandButtonStyle" TargetType="Button">
+        <Setter Property="MinWidth" Value="116" />
+        <Setter Property="CornerRadius" Value="4" />
       </Style>
-      <Style x:Key="GalleryWideButtonStyle"
+      <Style x:Key="WideCommandButtonStyle"
              TargetType="Button"
-             BasedOn="{StaticResource GalleryCommandButtonStyle}">
-        <Setter Property="MinWidth" Value="168" />
+             BasedOn="{StaticResource CommandButtonStyle}">
+        <Setter Property="MinWidth" Value="150" />
       </Style>
     </ResourceDictionary>
   </Window.Resources>
 
-  <Grid Columns="260,*">
-    <NavigationView Grid.Column="0"
-                    Header="KeshUI SDK"
-                    Items="Home;Controls;Input;Navigation;Collections;Dialogs;Design System;XAML Compiler;Prism Bridge" />
-
-    <ScrollViewer Grid.Column="1">
-      <StackPanel Padding="32,26,32,40" Spacing="18">
-        <BreadcrumbBar Items="KeshUI SDK;Gallery;Compiled XAML runtime" />
-        <TextBlock Text="Build native interfaces with KeshUI" FontSize="28" FontWeight="SemiBold" />
-        <TextBlock Text="A C++20 XAML framework inspired by WinUI 3 architecture and Fluent control language, running on Linux today and designed for Prism tomorrow." FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-
-        <InfoBar Title="KXamlC 0.3 is active" Severity="Success" Content="Resources, styles, namescope metadata and markup extensions are compiled before the application is linked." />
-
-        <Border Background="{StaticResource GalleryHeroBrush}"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="{StaticResource GalleryCardPadding}">
-          <StackPanel Spacing="12">
-            <TextBlock Text="Runtime architecture" FontSize="20" FontWeight="SemiBold" />
-            <StackPanel Orientation="Horizontal" Spacing="12">
-              <Card Width="250" Title="Dependency properties" Subtitle="Effective-value pipeline" Content="animation > local > style > inherited > default" />
-              <Card Width="250" Title="Visual states" Subtitle="Control state machine" Content="Normal · PointerOver · Pressed · Disabled" />
-              <Card Width="250" Title="Resources" Subtitle="Compiled dictionaries" Content="StaticResource · ThemeResource · Style" />
-              <Card Width="250" Title="Layout" Subtitle="Two-pass layout" Content="Measure → Arrange · Grid · StackPanel" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <TextBlock Text="Buttons and command surfaces" FontSize="20" FontWeight="SemiBold" />
-        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
-          <StackPanel Spacing="14">
-            <StackPanel Orientation="Horizontal" Spacing="10">
-              <Button Style="{StaticResource GalleryCommandButtonStyle}" Content="Standard button" Click="OnStandardButton" />
-              <AccentButton Content="Accent action" Click="OnAccentButton" />
-              <HyperlinkButton Content="Hyperlink action" Click="OnHyperlink" />
-              <Badge Content="LIVE" />
-            </StackPanel>
-            <TextBlock x:Name="StatusText" Text="Ready. Hover and press the controls to see VisualState changes." FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-          </StackPanel>
-        </Border>
-
-        <TextBlock Text="Compiled namescope + binding" FontSize="20" FontWeight="SemiBold" />
-        <Border Background="{StaticResource GalleryInsetBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
-          <StackPanel Spacing="10">
-            <TextBlock Text="This TextBlock receives its initial value from a named TextBox through a compiled ElementName binding." FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-            <StackPanel Orientation="Horizontal" Spacing="12">
-              <TextBox x:Name="BindingSourceBox" Width="320" Text="Hello from KXamlC namescope" PlaceholderText="Binding source" />
-              <TextBlock x:Name="BindingTargetText"
-                         Width="360"
-                         Text="{Binding ElementName=BindingSourceBox, Path=Text, Mode=OneTime, FallbackValue=Binding unavailable}"
-                         FontSize="14" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <TextBlock Text="Selection and values" FontSize="20" FontWeight="SemiBold" />
-        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
-          <StackPanel Spacing="14">
-            <StackPanel Orientation="Horizontal" Spacing="22">
-              <ToggleSwitch Header="Fluent motion" IsOn="True" />
-              <CheckBox Content="Enable telemetry" IsChecked="True" />
-              <RadioButton Content="Stable channel" IsChecked="True" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="16">
-              <Slider Width="300" Minimum="0" Maximum="100" Value="68" />
-              <ProgressBar Width="240" Value="68" />
-              <ProgressRing Value="68" />
-            </StackPanel>
-          </StackPanel>
-        </Border>
-
-        <TextBlock Text="Text and choice controls" FontSize="20" FontWeight="SemiBold" />
-        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
-          <StackPanel Spacing="12">
-            <StackPanel Orientation="Horizontal" Spacing="12">
-              <TextBox Width="260" PlaceholderText="Type something…" />
-              <SearchBox Width="260" PlaceholderText="Search SDK…" />
-              <ComboBox Width="220" Items="C++;C# binding (future);Rust binding (future)" SelectedIndex="0" />
-            </StackPanel>
-            <TabView Tabs="Overview;API;XAML;Theme" />
-          </StackPanel>
-        </Border>
-
-        <TextBlock Text="Collections and navigation" FontSize="20" FontWeight="SemiBold" />
-        <StackPanel Orientation="Horizontal" Spacing="12">
-          <ListView Width="350" Items="DependencyObject;FrameworkElement;ControlTemplate;VisualStateManager;ResourceDictionary" />
-          <SettingsCard Width="360" Title="Prism backend" Subtitle="Renderer abstraction" Description="The Linux X11/Cairo backend is replaceable without changing the XAML object model." Content="Target: KeshOS Prism surfaces" />
-          <Expander Width="360" Header="What came from WinUI research?" Content="Property precedence, resources, templates, visual states, routed input, two-pass layout and compiler architecture." IsExpanded="True" />
+  <Grid Columns="224,*">
+    <!-- Fluent 2 navigation rail: neutral surface, compact spacing, subtle selection. -->
+    <Border Grid.Column="0"
+            Background="{ThemeResource LayerFillColorAltBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            Padding="12,16,12,16">
+      <StackPanel Spacing="8">
+        <StackPanel Padding="8,4,8,16" Spacing="3">
+          <TextBlock Text="KeshUI" FontSize="20" FontWeight="SemiBold" />
+          <TextBlock Text="SDK gallery" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
         </StackPanel>
 
-        <TextBlock Text="Notifications and overlays" FontSize="20" FontWeight="SemiBold" />
-        <StackPanel Spacing="10">
-          <InfoBar Title="Informational" Severity="Informational" Content="Resource dictionaries now participate in generated page construction instead of being documentation-only metadata." />
-          <InfoBar Title="Warning" Severity="Warning" Content="KeshUI remains an independent framework, not a WinUI binary-compatibility layer." />
-        </StackPanel>
+        <TextBlock Text="Explore" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="10,0,0,2" />
 
-        <TextBlock Text="Compiler + runtime architecture" FontSize="20" FontWeight="SemiBold" />
-        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
-          <StackPanel Spacing="10">
-            <TextBlock Text="XAML → KXamlC typed IR → resources/styles → generated C++ → BuildContext → DependencyObject tree → Measure/Arrange → renderer" FontSize="14" />
-            <TextBlock Text="The gallery does not parse MainWindow.xaml at runtime." FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-            <StackPanel Orientation="Horizontal" Spacing="10">
-              <Button Style="{StaticResource GalleryWideButtonStyle}" Content="Toggle theme" Click="OnToggleTheme" />
-              <AccentButton Content="Change accent" Click="OnChangeAccent" />
-              <Button Style="{StaticResource GalleryCommandButtonStyle}" Content="Show dialog demo" Click="OnDialogDemo" />
-            </StackPanel>
-          </StackPanel>
+        <Border Background="{ThemeResource ControlFillColorSecondaryBrush}" CornerRadius="4">
+          <Grid Columns="3,*">
+            <Border Grid.Column="0" Background="{ThemeResource AccentFillColorDefaultBrush}" CornerRadius="2" />
+            <TextBlock Grid.Column="1" Text="Home" FontSize="14" FontWeight="SemiBold" Margin="13,8,8,8" />
+          </Grid>
         </Border>
+
+        <TextBlock Text="Controls" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="16,8,8,8" />
+        <TextBlock Text="Layout" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="16,8,8,8" />
+        <TextBlock Text="Navigation" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="16,8,8,8" />
+        <TextBlock Text="Input" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="16,8,8,8" />
 
         <Separator />
-        <TextBlock Text="KeshUI SDK v0.3 · C++20 · KXamlC typed IR · X11/Cairo/Pango preview · Prism-ready architecture" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        <TextBlock Text="Framework" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="10,2,0,2" />
+        <TextBlock Text="Resources and styles" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="16,8,8,8" />
+        <TextBlock Text="Data binding" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="16,8,8,8" />
+        <TextBlock Text="XAML compiler" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="16,8,8,8" />
+        <TextBlock Text="Prism bridge" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="16,8,8,8" />
+
+        <Separator />
+        <TextBlock Text="KeshUI v0.3" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="10,8,0,0" />
+        <TextBlock Text="C++20 · compiled XAML" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="10,0,0,0" />
       </StackPanel>
-    </ScrollViewer>
+    </Border>
+
+    <!-- Page background follows Fluent 2 neutral-background hierarchy. -->
+    <Border Grid.Column="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+      <ScrollViewer>
+        <StackPanel Padding="32,26,40,44" Spacing="22">
+          <BreadcrumbBar Items="KeshUI;Gallery;Fluent 2" />
+
+          <Grid Columns="*,Auto">
+            <StackPanel Grid.Column="0" Spacing="5">
+              <TextBlock Text="Fluent 2 controls for KeshUI" FontSize="32" FontWeight="SemiBold" />
+              <TextBlock Text="Neutral surfaces, semantic tokens, compact spacing and one clear Kesh brand accent." FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            </StackPanel>
+            <Badge Grid.Column="1" Content="PREVIEW" Margin="16,8,0,0" />
+          </Grid>
+
+          <InfoBar Title="Fluent 2 visual reference is active"
+                   Severity="Informational"
+                   Content="The gallery now follows Microsoft's public Fluent 2 token hierarchy instead of a custom blue-black dashboard theme." />
+
+          <StackPanel Spacing="12">
+            <TextBlock Text="Foundations" FontSize="20" FontWeight="SemiBold" />
+            <TextBlock Text="Fluent 2 relies on semantic tokens instead of painting every component independently." FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            <StackPanel Orientation="Horizontal" Spacing="12">
+              <Card Width="252" Title="Color" Subtitle="Neutral + brand" Content="Background · foreground · stroke" />
+              <Card Width="252" Title="Typography" Subtitle="Segoe-style hierarchy" Content="12 · 14 · 20 · 28 · 32" />
+              <Card Width="252" Title="Spacing" Subtitle="4 px rhythm" Content="8 · 12 · 16 · 24 · 32" />
+              <Card Width="252" Title="Shape" Subtitle="Small radii" Content="4 px controls · 8 px cards" />
+            </StackPanel>
+          </StackPanel>
+
+          <StackPanel Spacing="12">
+            <TextBlock Text="Buttons and commands" FontSize="20" FontWeight="SemiBold" />
+            <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
+              <StackPanel Spacing="14">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <AccentButton Content="Primary action" Click="OnAccentButton" />
+                  <Button Style="{StaticResource CommandButtonStyle}" Content="Standard" Click="OnStandardButton" />
+                  <HyperlinkButton Content="Subtle action" Click="OnHyperlink" />
+                  <Badge Content="New" />
+                </StackPanel>
+                <TextBlock x:Name="StatusText"
+                           Text="One primary action, then neutral or subtle commands."
+                           FontSize="13"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+
+          <StackPanel Spacing="12">
+            <TextBlock Text="Selection and values" FontSize="20" FontWeight="SemiBold" />
+            <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
+              <StackPanel Spacing="16">
+                <StackPanel Orientation="Horizontal" Spacing="24">
+                  <ToggleSwitch Header="Motion" IsOn="True" />
+                  <CheckBox Content="Telemetry" IsChecked="True" />
+                  <RadioButton Content="Stable channel" IsChecked="True" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="18">
+                  <Slider Width="320" Minimum="0" Maximum="100" Value="68" />
+                  <ProgressBar Width="260" Value="68" />
+                  <ProgressRing Value="68" />
+                </StackPanel>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+
+          <StackPanel Spacing="12">
+            <TextBlock Text="Text, choice and navigation" FontSize="20" FontWeight="SemiBold" />
+            <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
+              <StackPanel Spacing="12">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                  <TextBox Width="250" PlaceholderText="Text field" />
+                  <SearchBox Width="250" PlaceholderText="Search controls" />
+                  <ComboBox Width="230" Items="C++;C# binding (future);Rust binding (future)" SelectedIndex="0" />
+                </StackPanel>
+                <TabView Tabs="Overview;API;XAML;Tokens" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+
+          <StackPanel Spacing="12">
+            <TextBlock Text="Compiled XAML runtime" FontSize="20" FontWeight="SemiBold" />
+            <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="16">
+              <StackPanel Spacing="12">
+                <TextBlock Text="x:Name and ElementName binding are compiled before link time." FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                  <TextBox x:Name="BindingSourceBox" Width="300" Text="Hello from KXamlC" PlaceholderText="Binding source" />
+                  <TextBlock x:Name="BindingTargetText"
+                             Width="320"
+                             Text="{Binding ElementName=BindingSourceBox, Path=Text, Mode=OneTime, FallbackValue=Binding unavailable}"
+                             FontSize="14" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <Button Style="{StaticResource WideCommandButtonStyle}" Content="Toggle light / dark" Click="OnToggleTheme" />
+                  <Button Style="{StaticResource CommandButtonStyle}" Content="Dialog demo" Click="OnDialogDemo" />
+                </StackPanel>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+
+          <Separator />
+          <TextBlock Text="KeshUI SDK v0.3 · Fluent 2 reference pass · KXamlC · X11/Cairo/Pango · Prism-ready"
+                     FontSize="12"
+                     Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+      </ScrollViewer>
+    </Border>
   </Grid>
 </Window>
