@@ -1,3 +1,4 @@
+#include <keshui/fluent2_theme.hpp>
 #include <keshui/keshui.hpp>
 #include "MainWindow.g.hpp"
 
@@ -7,6 +8,10 @@
 using namespace keshui;
 
 int main() {
+    // The gallery starts with the public Fluent 2 dark neutral ramp, then keeps
+    // Kesh's orange accent as its brand color.
+    fluent2::ApplyReferenceTheme(ThemeKind::Dark);
+
     XamlEventBinder binder;
     std::weak_ptr<Window> weakWindow;
 
@@ -19,39 +24,31 @@ int main() {
     };
 
     binder.Register("OnStandardButton", [&](UIElement&) {
-        setStatus("Standard Button: Click routed from generated XAML into C++ code-behind.");
+        setStatus("Standard button · routed Click event from compiled XAML into C++ code-behind.");
     });
     binder.Register("OnAccentButton", [&](UIElement&) {
-        setStatus("Accent Button: semantic accent resources + visual states are active.");
+        setStatus("Primary action · Kesh orange is used as a Fluent 2 brand token, not as a surface color.");
     });
     binder.Register("OnHyperlink", [&](UIElement&) {
-        setStatus("HyperlinkButton: lightweight command surface fired.");
+        setStatus("Subtle command · low-emphasis actions stay text-forward in the Fluent 2 hierarchy.");
     });
     binder.Register("OnToggleTheme", [&](UIElement&) {
         auto& tm = ThemeManager::Current();
-        tm.SetTheme(tm.Theme() == ThemeKind::Dark ? ThemeKind::Light : ThemeKind::Dark);
-        setStatus(tm.Theme() == ThemeKind::Dark
-            ? "ThemeResource: switched to Dark theme."
-            : "ThemeResource: switched to Light theme.");
-    });
-    binder.Register("OnChangeAccent", [&](UIElement&) {
-        static int accent = 0;
-        const Color accents[] = {
-            Color::FromHex("#F28A22"), Color::FromHex("#7C8CFF"),
-            Color::FromHex("#4CC38A"), Color::FromHex("#E35D9A")
-        };
-        accent = (accent + 1) % 4;
-        ThemeManager::Current().SetAccent(accents[accent]);
-        setStatus("Accent resource changed. Semantic accent controls resolve the new palette on redraw.");
+        const auto next = tm.Theme() == ThemeKind::Dark ? ThemeKind::Light : ThemeKind::Dark;
+        fluent2::ApplyReferenceTheme(next);
+        setStatus(next == ThemeKind::Dark
+            ? "Theme changed to Fluent 2 dark reference palette."
+            : "Theme changed to Fluent 2 light reference palette.");
     });
     binder.Register("OnDialogDemo", [&](UIElement&) {
-        setStatus("ContentDialog overlay hosting is still a foundation. v0.3 focused on the XAML compiler/runtime rather than adding more widgets.");
+        setStatus("ContentDialog hosting is still a runtime foundation; this pass focuses on visual language and tokens.");
     });
 
     try {
         auto window = keshui_generated::BuildMainWindow(binder);
         weakWindow = window;
-        std::cout << "KeshUI SDK Gallery v0.3\n"
+        std::cout << "KeshUI SDK Gallery v0.3 - Fluent 2 visual pass\n"
+                  << "  Visual language: Fluent 2 public token model + Kesh brand accent\n"
                   << "  XAML: KXamlC typed IR -> generated C++\n"
                   << "  Resources: ResourceDictionary + StaticResource + ThemeResource\n"
                   << "  Styles: Setter + BasedOn compiled into BuildContext\n"
